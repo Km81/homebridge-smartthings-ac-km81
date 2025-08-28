@@ -1,4 +1,4 @@
-// index.js v2.4.6
+// index.js v2.4.7
 'use strict';
 
 const SmartThings = require('./lib/SmartThings');
@@ -143,7 +143,7 @@ class SmartThingsACPlatform {
   }
 
   _syncDevices(stDevices, configDevices) {
-    // 1) deviceLabel 미기재 항목 자동 스킵
+    // deviceLabel 미기재 항목 자동 스킵
     const validDevices = (configDevices || []).filter(d =>
       d && typeof d.deviceLabel === 'string' && d.deviceLabel.trim() !== ''
     );
@@ -152,7 +152,6 @@ class SmartThingsACPlatform {
       this.log.warn(`설정에 이름 없는 장치 ${skipped}개를 건너뜁니다. (deviceLabel 누락)`);
     }
 
-    // 2) 정규화 라벨로 매칭
     for (const configDevice of validDevices) {
       const targetLabel = normalizeKorean(configDevice.deviceLabel);
       const foundDevice = stDevices.find(stDevice => normalizeKorean(stDevice.label) === targetLabel);
@@ -293,26 +292,16 @@ class SmartThingsACPlatform {
       setter: (value) => this.smartthings.setTemperature(deviceId, value),
     });
 
-    // SwingMode: none / windFree / childLock
+    // SwingMode: none / windFree  (Child Lock 제거)
     const swingBinding = (configDevice.swingBinding || 'windFree');
     if (swingBinding !== 'none') {
       this._bindCharacteristic({
         service,
         characteristic: Characteristic.SwingMode,
-        getter: async () => {
-          if (swingBinding === 'windFree') {
-            return (await this.smartthings.getWindFree(deviceId)) ? 1 : 0;
-          } else {
-            return (await this.smartthings.getChildLock(deviceId)) ? 1 : 0;
-          }
-        },
+        getter: async () => (await this.smartthings.getWindFree(deviceId)) ? 1 : 0,
         setter: async (value) => {
           const enable = value === 1;
-          if (swingBinding === 'windFree') {
-            await this.smartthings.setWindFree(deviceId, enable);
-          } else {
-            await this.smartthings.setChildLock(deviceId, enable);
-          }
+          await this.smartthings.setWindFree(deviceId, enable);
         }
       });
     } else {
@@ -320,26 +309,16 @@ class SmartThingsACPlatform {
       if (existing) service.removeCharacteristic(existing);
     }
 
-    // LockPhysicalControls: none / autoClean / childLock
+    // LockPhysicalControls: none / autoClean  (Child Lock 제거)
     const lockBinding = (configDevice.lockBinding || 'autoClean');
     if (lockBinding !== 'none') {
       this._bindCharacteristic({
         service,
         characteristic: Characteristic.LockPhysicalControls,
-        getter: async () => {
-          if (lockBinding === 'autoClean') {
-            return (await this.smartthings.getAutoClean(deviceId)) ? 1 : 0;
-          } else {
-            return (await this.smartthings.getChildLock(deviceId)) ? 1 : 0;
-          }
-        },
+        getter: async () => (await this.smartthings.getAutoClean(deviceId)) ? 1 : 0,
         setter: async (value) => {
           const enable = value === 1;
-          if (lockBinding === 'autoClean') {
-            await this.smartthings.setAutoClean(deviceId, enable);
-          } else {
-            await this.smartthings.setChildLock(deviceId, enable);
-          }
+          await this.smartthings.setAutoClean(deviceId, enable);
         }
       });
     } else {
@@ -402,4 +381,3 @@ class SmartThingsACPlatform {
     }
   }
 }
-
