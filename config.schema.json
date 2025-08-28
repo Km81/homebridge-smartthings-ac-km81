@@ -46,27 +46,21 @@
             "coolModeCommand": {
               "title": "HomeKit '냉방(COOL)' 전송 모드",
               "type": "string",
-              "oneOf": [
-                { "const": "dry",  "title": "제습(Dry)로 명령" },
-                { "const": "cool", "title": "냉방(Cool)로 명령" }
-              ],
+              "enum": ["dry", "cool"],
+              "enumNames": ["제습(Dry) 명령", "냉방(Cool) 명령"],
               "description": "Home에서 '냉방'을 선택했을 때 실제 에어컨에 보낼 모드"
             },
             "swingBinding": {
               "title": "스윙(Swing) 토글 ↔ 기능",
               "type": "string",
-              "oneOf": [
-                { "const": "windFree", "title": "무풍(WindFree)" },
-                { "const": "none",      "title": "사용 안 함" }
-              ]
+              "enum": ["windFree", "none"],
+              "enumNames": ["무풍(WindFree)", "사용 안 함"]
             },
             "lockBinding": {
               "title": "어린이 보호용 잠금장치(Lock) 토글 ↔ 기능",
               "type": "string",
-              "oneOf": [
-                { "const": "autoClean", "title": "자동건조(Auto Clean)" },
-                { "const": "none",      "title": "사용 안 함" }
-              ]
+              "enum": ["autoClean", "none"],
+              "enumNames": ["자동건조(Auto Clean)", "사용 안 함"]
             },
 
             "exposeWindFreeSwitch": {
@@ -101,7 +95,7 @@
       "title": "에어컨 목록",
       "startEmpty": true,
       "orderable": true,
-      "buttonText": "ADD 에어컨 목록",
+      "addButtonText": "ADD 에어컨 목록",
       "arrayItemCardTitle": "deviceLabel",
       "items": [
         "deviceLabel",
@@ -109,9 +103,9 @@
         "serialNumber",
 
         { "type": "help", "help": "<b>모드/기능 매핑</b>" },
-        "coolModeCommand",
-        "swingBinding",
-        "lockBinding",
+        { "key": "coolModeCommand", "type": "select" },
+        { "key": "swingBinding",    "type": "select" },
+        { "key": "lockBinding",     "type": "select" },
 
         { "type": "help", "help": "<b>별도 스위치 노출</b>" },
         "exposeWindFreeSwitch",
