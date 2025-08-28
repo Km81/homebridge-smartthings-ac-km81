@@ -47,8 +47,8 @@
               "title": "HomeKit '냉방(COOL)' 전송 모드",
               "type": "string",
               "oneOf": [
-                { "const": "dry",  "title": "제습(Dry) 명령" },
-                { "const": "cool", "title": "냉방(Cool) 명령" }
+                { "const": "dry",  "title": "제습(Dry)로 명령" },
+                { "const": "cool", "title": "냉방(Cool)로 명령" }
               ],
               "description": "Home에서 '냉방'을 선택했을 때 실제 에어컨에 보낼 모드"
             },
@@ -107,25 +107,16 @@
         "devices[].deviceLabel",
         "devices[].model",
         "devices[].serialNumber",
-        {
-          "type": "section",
-          "title": "모드/기능 매핑",
-          "items": [
-            "devices[].coolModeCommand",
-            "devices[].swingBinding",
-            "devices[].lockBinding"
-          ]
-        },
-        {
-          "type": "section",
-          "title": "별도 스위치 노출",
-          "items": [
-            "devices[].exposeWindFreeSwitch",
-            "devices[].exposeAutoCleanSwitch"
-          ]
-        }
+
+        { "type": "help", "help": "<b>모드/기능 매핑</b>" },
+        "devices[].coolModeCommand",
+        "devices[].swingBinding",
+        "devices[].lockBinding",
+
+        { "type": "help", "help": "<b>별도 스위치 노출</b>" },
+        "devices[].exposeWindFreeSwitch",
+        "devices[].exposeAutoCleanSwitch"
       ]
     }
   ]
 }
-
