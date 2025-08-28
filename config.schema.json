@@ -42,37 +42,41 @@
               "title": "일련번호 (선택)",
               "type": "string"
             },
+
+            /* ▼ 셀렉트: oneOf(const/title) 로 변경 */
             "coolModeCommand": {
               "title": "HomeKit '냉방(COOL)' 전송 모드",
               "type": "string",
-              "enum": ["dry", "cool"],
-              "enumNames": ["제습(Dry)로 명령", "냉방(Cool)로 명령"],
-              "default": "dry",
+              "oneOf": [
+                { "const": "dry",  "title": "제습(Dry)로 명령" },
+                { "const": "cool", "title": "냉방(Cool)로 명령" }
+              ],
               "description": "Home에서 '냉방'을 선택했을 때 실제 에어컨에 보낼 모드"
             },
             "swingBinding": {
               "title": "스윙(Swing) 토글 ↔ 기능",
               "type": "string",
-              "enum": ["none", "windFree"],
-              "enumNames": ["사용 안 함", "무풍(WindFree)"],
-              "default": "windFree"
+              "oneOf": [
+                { "const": "windFree", "title": "무풍(WindFree)" },
+                { "const": "none",      "title": "사용 안 함" }
+              ]
             },
             "lockBinding": {
               "title": "어린이 보호용 잠금장치(Lock) 토글 ↔ 기능",
               "type": "string",
-              "enum": ["none", "autoClean"],
-              "enumNames": ["사용 안 함", "자동건조(Auto Clean)"],
-              "default": "autoClean"
+              "oneOf": [
+                { "const": "autoClean", "title": "자동건조(Auto Clean)" },
+                { "const": "none",      "title": "사용 안 함" }
+              ]
             },
+
             "exposeWindFreeSwitch": {
               "title": "무풍 별도 스위치 노출",
-              "type": "boolean",
-              "default": false
+              "type": "boolean"
             },
             "exposeAutoCleanSwitch": {
               "title": "자동건조 별도 스위치 노출",
-              "type": "boolean",
-              "default": false
+              "type": "boolean"
             }
           },
           "required": ["deviceLabel", "coolModeCommand", "swingBinding", "lockBinding"]
@@ -81,6 +85,7 @@
     },
     "required": ["name", "clientId", "clientSecret", "redirectUri", "devices"]
   },
+
   "layout": [
     "name",
     {
@@ -90,12 +95,15 @@
     "clientId",
     "clientSecret",
     "redirectUri",
+
     {
       "key": "devices",
       "type": "array",
       "title": "에어컨 목록",
       "startEmpty": true,
-      "addButtonText": "ADD 에어컨 목록",
+      "orderable": true,
+      "buttonText": "ADD 에어컨 목록",
+      "arrayItemCardTitle": "devices[].deviceLabel",
       "items": [
         "devices[].deviceLabel",
         "devices[].model",
