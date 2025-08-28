@@ -1,4 +1,4 @@
-// index.js v2.4.7
+// index.js v2.4.8
 'use strict';
 
 const SmartThings = require('./lib/SmartThings');
@@ -143,7 +143,6 @@ class SmartThingsACPlatform {
   }
 
   _syncDevices(stDevices, configDevices) {
-    // deviceLabel 미기재 항목 자동 스킵
     const validDevices = (configDevices || []).filter(d =>
       d && typeof d.deviceLabel === 'string' && d.deviceLabel.trim() !== ''
     );
@@ -263,7 +262,9 @@ class SmartThingsACPlatform {
     });
 
     // 대상 상태는 COOL만, 전송 모드는 dry/cool 선택
-    const coolCmd = (configDevice.coolModeCommand || 'dry').toLowerCase() === 'cool' ? 'cool' : 'dry';
+    const coolCmd =
+      ((configDevice.coolCommand || configDevice.coolModeCommand || 'dry').toLowerCase() === 'cool')
+        ? 'cool' : 'dry';
     this._bindCharacteristic({
       service,
       characteristic: Characteristic.TargetHeaterCoolerState,
@@ -352,11 +353,12 @@ class SmartThingsACPlatform {
 
       const sw = acc.getService(Service.Switch) || acc.addService(Service.Switch, acc.displayName);
 
+      // 🔧 핵심 수정: Switch.On 은 boolean true/false 를 사용해야 함
       this._bindCharacteristic({
         service: sw,
         characteristic: Characteristic.On,
-        getter: async () => (await getter()) ? 1 : 0,
-        setter: async (v) => setter(v === 1),
+        getter: async () => !!(await getter()),
+        setter: async (v) => setter(!!v),
       });
     };
 
