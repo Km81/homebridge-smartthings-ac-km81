@@ -94,6 +94,8 @@
       "key": "devices",
       "type": "array",
       "title": "에어컨 목록",
+      "startEmpty": true,
+      "addButtonText": "ADD 에어컨 목록",
       "items": [
         "devices[].deviceLabel",
         "devices[].model",
