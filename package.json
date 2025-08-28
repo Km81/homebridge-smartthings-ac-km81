@@ -1,6 +1,6 @@
 {
   "name": "homebridge-smartthings-ac-km81",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "SmartThings 에어컨을 HomeKit에 연동하는 고기능 커스텀 플러그인 (CLI 기반 OAuth2 자동 인증 지원)",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,8 @@
     "node": ">=18.0.0"
   },
   "homebridge": {
-    "verifiedPlugin": true
+    "verifiedPlugin": true,
+    "schema": "config.schema.json"
   },
   "repository": {
     "type": "git",
