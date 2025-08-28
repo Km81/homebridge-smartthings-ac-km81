@@ -8,35 +8,31 @@
       "name": {
         "title": "플랫폼 이름",
         "type": "string",
-        "default": "SmartThings AC",
-        "required": true
+        "default": "SmartThings AC"
       },
       "clientId": {
         "title": "Client ID",
-        "type": "string",
-        "required": true
+        "type": "string"
       },
       "clientSecret": {
         "title": "Client Secret",
-        "type": "string",
-        "required": true
+        "type": "string"
       },
       "redirectUri": {
         "title": "Redirect URI",
         "type": "string",
-        "default": "http://localhost:8999/oauth/callback",
-        "required": true
+        "default": "http://localhost:8999/oauth/callback"
       },
       "devices": {
         "title": "연동할 에어컨 장치",
         "type": "array",
+        "minItems": 1,
         "items": {
           "type": "object",
           "properties": {
             "deviceLabel": {
               "title": "에어컨 이름 (SmartThings 레이블)",
-              "type": "string",
-              "required": true
+              "type": "string"
             },
             "model": {
               "title": "모델명 (선택)",
