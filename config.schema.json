@@ -51,6 +51,50 @@
               "title": "일련번호 (선택 사항)",
               "type": "string",
               "description": "홈 앱에 표시될 일련번호를 입력합니다."
+            },
+
+            /* === 새로 추가된 기기별 옵션 === */
+            "coolModeCommand": {
+              "title": "HomeKit '냉방(COOL)' 선택 시 실제 전송 모드",
+              "type": "string",
+              "enum": ["dry", "cool"],
+              "enumNames": ["제습(Dry)로 명령", "냉방(Cool)로 명령"],
+              "default": "dry",
+              "description": "HomeKit에서 '냉방'을 눌렀을 때 실제 에어컨에 전송할 모드를 선택합니다."
+            },
+            "swingBinding": {
+              "title": "스윙(Swing) 토글이 제어할 기능",
+              "type": "string",
+              "enum": ["none", "windFree", "childLock"],
+              "enumNames": ["사용 안 함", "무풍(WindFree)", "차일드락(Child Lock)"],
+              "default": "windFree",
+              "description": "HeaterCooler의 스윙 토글로 어떤 기능을 제어할지 선택합니다."
+            },
+            "lockBinding": {
+              "title": "차일드락(Lock) 토글이 제어할 기능",
+              "type": "string",
+              "enum": ["none", "autoClean", "childLock"],
+              "enumNames": ["사용 안 함", "자동건조(Auto Clean)", "차일드락(Child Lock)"],
+              "default": "autoClean",
+              "description": "HeaterCooler의 물리 제어 잠금 토글로 어떤 기능을 제어할지 선택합니다."
+            },
+            "exposeWindFreeSwitch": {
+              "title": "무풍(WindFree) 별도 스위치 노출",
+              "type": "boolean",
+              "default": false,
+              "description": "에어컨 악세서리 내부가 아닌 별도의 Switch 악세서리로 무풍을 제어합니다."
+            },
+            "exposeChildLockSwitch": {
+              "title": "차일드락(Child Lock) 별도 스위치 노출",
+              "type": "boolean",
+              "default": false,
+              "description": "에어컨 악세서리 내부가 아닌 별도의 Switch 악세서리로 차일드락을 제어합니다."
+            },
+            "exposeAutoCleanSwitch": {
+              "title": "자동건조(Auto Clean) 별도 스위치 노출",
+              "type": "boolean",
+              "default": false,
+              "description": "에어컨 악세서리 내부가 아닌 별도의 Switch 악세서리로 자동건조를 제어합니다."
             }
           }
         }
@@ -73,7 +117,27 @@
       "items": [
         "devices[].deviceLabel",
         "devices[].model",
-        "devices[].serialNumber"
+        "devices[].serialNumber",
+
+        /* === 새 옵션들 UI 배치 === */
+        {
+          "type": "section",
+          "title": "모드/기능 매핑",
+          "items": [
+            "devices[].coolModeCommand",
+            "devices[].swingBinding",
+            "devices[].lockBinding"
+          ]
+        },
+        {
+          "type": "section",
+          "title": "별도 스위치 노출",
+          "items": [
+            "devices[].exposeWindFreeSwitch",
+            "devices[].exposeChildLockSwitch",
+            "devices[].exposeAutoCleanSwitch"
+          ]
+        }
       ]
     }
   ]
