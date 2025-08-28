@@ -1,7 +1,7 @@
-// index.js v2.4.3
+// index.js v2.4.4
 'use strict';
 
-const SmartThings = require('./lib/SmartThings'); // ← 경로 복원
+const SmartThings = require('./lib/SmartThings');
 const pkg = require('./package.json');
 const http = require('http');
 const url = require('url');
@@ -125,7 +125,7 @@ class SmartThingsACPlatform {
         });
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ "targetUrl": confirmationUrl }));
+        res.end(JSON.stringify({ "targetUrl": ${"confirmationUrl"} }));
       } else {
         res.writeHead(200);
         res.end();
@@ -143,11 +143,21 @@ class SmartThingsACPlatform {
   }
 
   _syncDevices(stDevices, configDevices) {
-    for (const configDevice of configDevices) {
+    // 1) deviceLabel 미기재 항목 자동 스킵
+    const validDevices = (configDevices || []).filter(d =>
+      d && typeof d.deviceLabel === 'string' && d.deviceLabel.trim() !== ''
+    );
+    const skipped = (configDevices || []).length - validDevices.length;
+    if (skipped > 0) {
+      this.log.warn(`설정에 이름 없는 장치 ${skipped}개를 건너뜁니다. (deviceLabel 누락)`);
+    }
+
+    // 2) 정규화 라벨로 매칭
+    for (const configDevice of validDevices) {
       const targetLabel = normalizeKorean(configDevice.deviceLabel);
       const foundDevice = stDevices.find(stDevice => normalizeKorean(stDevice.label) === targetLabel);
 
-    if (foundDevice) {
+      if (foundDevice) {
         this.log.info(`'${configDevice.deviceLabel}' 장치를 찾았습니다. HomeKit에 추가/갱신합니다.`);
         this.addOrUpdateAccessory(foundDevice, configDevice);
       } else {
@@ -233,6 +243,7 @@ class SmartThingsACPlatform {
     const service = accessory.getService(Service.HeaterCooler) ||
       accessory.addService(Service.HeaterCooler, accessory.displayName);
 
+    // 전원
     this._bindCharacteristic({
       service,
       characteristic: Characteristic.Active,
@@ -240,6 +251,7 @@ class SmartThingsACPlatform {
       setter: (value) => this.smartthings.setPower(deviceId, value === 1),
     });
 
+    // 전원 ON이면 항상 Cooling 표시
     this._bindCharacteristic({
       service,
       characteristic: Characteristic.CurrentHeaterCoolerState,
@@ -251,6 +263,7 @@ class SmartThingsACPlatform {
       },
     });
 
+    // 대상 상태는 COOL만, 전송 모드는 dry/cool 선택
     const coolCmd = (configDevice.coolModeCommand || 'dry').toLowerCase() === 'cool' ? 'cool' : 'dry';
     this._bindCharacteristic({
       service,
@@ -264,12 +277,14 @@ class SmartThingsACPlatform {
       },
     });
 
+    // 현재 온도
     this._bindCharacteristic({
       service,
       characteristic: Characteristic.CurrentTemperature,
       getter: () => this.smartthings.getCurrentTemperature(deviceId),
     });
 
+    // 목표(냉방) 온도
     this._bindCharacteristic({
       service,
       characteristic: Characteristic.CoolingThresholdTemperature,
@@ -278,6 +293,7 @@ class SmartThingsACPlatform {
       setter: (value) => this.smartthings.setTemperature(deviceId, value),
     });
 
+    // SwingMode: none / windFree / childLock
     const swingBinding = (configDevice.swingBinding || 'windFree');
     if (swingBinding !== 'none') {
       this._bindCharacteristic({
@@ -304,6 +320,7 @@ class SmartThingsACPlatform {
       if (existing) service.removeCharacteristic(existing);
     }
 
+    // LockPhysicalControls: none / autoClean / childLock
     const lockBinding = (configDevice.lockBinding || 'autoClean');
     if (lockBinding !== 'none') {
       this._bindCharacteristic({
@@ -331,6 +348,7 @@ class SmartThingsACPlatform {
     }
   }
 
+  // 별도 스위치: 무풍 / 자동건조
   setupOptionalSwitches(device, configDevice) {
     const baseLabel = device.label;
 
@@ -351,7 +369,7 @@ class SmartThingsACPlatform {
       const info = acc.getService(Service.AccessoryInformation) || acc.addService(Service.AccessoryInformation);
       info
         .setCharacteristic(Characteristic.Manufacturer, 'Samsung')
-        .setCharacteristic(Characteristic.Model, (device.context?.configDevice?.model) || 'AC-Feature')
+        .setCharacteristic(Characteristic.Model, (configDevice?.model) || 'AC-Feature')
         .setCharacteristic(Characteristic.SerialNumber, `${device.deviceId}-${keySuffix}`)
         .setCharacteristic(Characteristic.FirmwareRevision, pkg.version);
 
