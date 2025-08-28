@@ -1,4 +1,4 @@
-// index.js v2.4.4
+// index.js v2.4.6
 'use strict';
 
 const SmartThings = require('./lib/SmartThings');
@@ -402,3 +402,4 @@ class SmartThingsACPlatform {
     }
   }
 }
+
