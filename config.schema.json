@@ -102,20 +102,20 @@
       "startEmpty": true,
       "orderable": true,
       "buttonText": "ADD 에어컨 목록",
-      "arrayItemCardTitle": "devices[].deviceLabel",
+      "arrayItemCardTitle": "deviceLabel",
       "items": [
-        "devices[].deviceLabel",
-        "devices[].model",
-        "devices[].serialNumber",
+        "deviceLabel",
+        "model",
+        "serialNumber",
 
         { "type": "help", "help": "<b>모드/기능 매핑</b>" },
-        "devices[].coolModeCommand",
-        "devices[].swingBinding",
-        "devices[].lockBinding",
+        "coolModeCommand",
+        "swingBinding",
+        "lockBinding",
 
         { "type": "help", "help": "<b>별도 스위치 노출</b>" },
-        "devices[].exposeWindFreeSwitch",
-        "devices[].exposeAutoCleanSwitch"
+        "exposeWindFreeSwitch",
+        "exposeAutoCleanSwitch"
       ]
     }
   ]
