@@ -292,7 +292,7 @@ class SmartThingsACPlatform {
       setter: (value) => this.smartthings.setTemperature(deviceId, value),
     });
 
-    // SwingMode: none / windFree  (Child Lock 제거)
+    // SwingMode: none / windFree
     const swingBinding = (configDevice.swingBinding || 'windFree');
     if (swingBinding !== 'none') {
       this._bindCharacteristic({
@@ -300,8 +300,7 @@ class SmartThingsACPlatform {
         characteristic: Characteristic.SwingMode,
         getter: async () => (await this.smartthings.getWindFree(deviceId)) ? 1 : 0,
         setter: async (value) => {
-          const enable = value === 1;
-          await this.smartthings.setWindFree(deviceId, enable);
+          await this.smartthings.setWindFree(deviceId, value === 1);
         }
       });
     } else {
@@ -309,7 +308,7 @@ class SmartThingsACPlatform {
       if (existing) service.removeCharacteristic(existing);
     }
 
-    // LockPhysicalControls: none / autoClean  (Child Lock 제거)
+    // LockPhysicalControls: none / autoClean
     const lockBinding = (configDevice.lockBinding || 'autoClean');
     if (lockBinding !== 'none') {
       this._bindCharacteristic({
@@ -317,8 +316,7 @@ class SmartThingsACPlatform {
         characteristic: Characteristic.LockPhysicalControls,
         getter: async () => (await this.smartthings.getAutoClean(deviceId)) ? 1 : 0,
         setter: async (value) => {
-          const enable = value === 1;
-          await this.smartthings.setAutoClean(deviceId, enable);
+          await this.smartthings.setAutoClean(deviceId, value === 1);
         }
       });
     } else {
