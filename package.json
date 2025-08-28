@@ -1,6 +1,6 @@
 {
   "name": "homebridge-smartthings-ac-km81",
-  "version": "2.4.13",
+  "version": "2.4.14",
   "description": "SmartThings 에어컨을 HomeKit에 연동하는 커스텀 플러그인 (무풍/자동건조/어린이 보호용 잠금장치 매핑, 별도 스위치 노출, OAuth2)",
   "main": "index.js",
   "scripts": {
@@ -43,6 +43,7 @@
     "jest": "^29.7.0"
   }
 }
+
 
 
 
