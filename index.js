@@ -1,4 +1,4 @@
-// index.js v2.4.5
+// index.js v2.4.4
 'use strict';
 
 const SmartThings = require('./lib/SmartThings');
@@ -125,7 +125,7 @@ class SmartThingsACPlatform {
         });
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ "targetUrl": ${"confirmationUrl"} }));
+        res.end(JSON.stringify({ "targetUrl": confirmationUrl }));
       } else {
         res.writeHead(200);
         res.end();
@@ -402,4 +402,3 @@ class SmartThingsACPlatform {
     }
   }
 }
-
