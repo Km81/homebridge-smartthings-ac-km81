@@ -1,7 +1,7 @@
-// index.js v2.4.0
+// index.js v2.4.2
 'use strict';
 
-const SmartThings = require('./lib/SmartThings');
+const SmartThings = require('./SmartThings'); // 루트의 SmartThings.js 사용
 const pkg = require('./package.json');
 const http = require('http');
 const url = require('url');
@@ -199,10 +199,10 @@ class SmartThingsACPlatform {
       .setCharacteristic(Characteristic.SerialNumber, configDevice.serialNumber || device.deviceId)
       .setCharacteristic(Characteristic.FirmwareRevision, pkg.version);
 
-    // 메인 HeaterCooler 설정
+    // 메인 HeaterCooler
     this.setupHeaterCoolerService(accessory, configDevice);
 
-    // 별도 스위치 노출(필요 시)
+    // 별도 스위치: 무풍 / 자동건조만
     this.setupOptionalSwitches(device, configDevice);
   }
 
@@ -252,7 +252,7 @@ class SmartThingsACPlatform {
       setter: (value) => this.smartthings.setPower(deviceId, value === 1),
     });
 
-    // CurrentHeaterCoolerState: 전원이 켜져 있으면 항상 COOLING
+    // CurrentHeaterCoolerState: 전원 ON이면 항상 COOLING 표시
     this._bindCharacteristic({
       service,
       characteristic: Characteristic.CurrentHeaterCoolerState,
@@ -264,7 +264,7 @@ class SmartThingsACPlatform {
       },
     });
 
-    // TargetHeaterCoolerState: COOL만 노출하되, 실제 전송 모드 선택(dry/cool)
+    // TargetHeaterCoolerState: COOL만 노출, 실제 전송 모드(dry/cool) 선택
     const coolCmd = (configDevice.coolModeCommand || 'dry').toLowerCase() === 'cool' ? 'cool' : 'dry';
     this._bindCharacteristic({
       service,
@@ -294,7 +294,7 @@ class SmartThingsACPlatform {
       setter: (value) => this.smartthings.setTemperature(deviceId, value),
     });
 
-    // SwingMode 매핑 (none/windFree/childLock)
+    // SwingMode 매핑: none / windFree / childLock
     const swingBinding = (configDevice.swingBinding || 'windFree');
     if (swingBinding !== 'none') {
       this._bindCharacteristic({
@@ -317,12 +317,11 @@ class SmartThingsACPlatform {
         }
       });
     } else {
-      // 스윙을 사용하지 않을 때는 특성 자체를 생성하지 않음(HeaterCooler는 optional)
       const existing = service.getCharacteristic(Characteristic.SwingMode);
       if (existing) service.removeCharacteristic(existing);
     }
 
-    // LockPhysicalControls 매핑 (none/autoClean/childLock)
+    // LockPhysicalControls 매핑: none / autoClean / childLock
     const lockBinding = (configDevice.lockBinding || 'autoClean');
     if (lockBinding !== 'none') {
       this._bindCharacteristic({
@@ -350,7 +349,7 @@ class SmartThingsACPlatform {
     }
   }
 
-  // 별도 스위치 악세서리 생성(무풍/차일드락/자동건조)
+  // 별도 스위치: 무풍 / 자동건조만
   setupOptionalSwitches(device, configDevice) {
     const baseLabel = device.label;
 
@@ -371,7 +370,7 @@ class SmartThingsACPlatform {
       const info = acc.getService(Service.AccessoryInformation) || acc.addService(Service.AccessoryInformation);
       info
         .setCharacteristic(Characteristic.Manufacturer, 'Samsung')
-        .setCharacteristic(Characteristic.Model, configDevice.model || 'AC-Feature')
+        .setCharacteristic(Characteristic.Model, (device.context?.configDevice?.model) || 'AC-Feature')
         .setCharacteristic(Characteristic.SerialNumber, `${device.deviceId}-${keySuffix}`)
         .setCharacteristic(Characteristic.FirmwareRevision, pkg.version);
 
@@ -393,14 +392,7 @@ class SmartThingsACPlatform {
         (enable) => this.smartthings.setWindFree(device.deviceId, enable)
       );
     }
-    if (configDevice.exposeChildLockSwitch) {
-      maybeCreateSwitch(
-        'childlock',
-        '차일드락',
-        () => this.smartthings.getChildLock(device.deviceId),
-        (enable) => this.smartthings.setChildLock(device.deviceId, enable)
-      );
-    }
+
     if (configDevice.exposeAutoCleanSwitch) {
       maybeCreateSwitch(
         'autoclean',
