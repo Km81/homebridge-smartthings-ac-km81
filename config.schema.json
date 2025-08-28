@@ -46,22 +46,22 @@
               "title": "HomeKit '냉방(COOL)' 전송 모드",
               "type": "string",
               "enum": ["dry", "cool"],
-              "enumNames": ["제습(Dry)로 명령", "냉방(Cool)로 명령"],
+              "enumNames": ["제습(Dry) 명령", "냉방(Cool) 명령"],
               "default": "dry",
               "description": "Home에서 '냉방'을 선택했을 때 실제 에어컨에 보낼 모드"
             },
             "swingBinding": {
               "title": "스윙(Swing) 토글 ↔ 기능",
               "type": "string",
-              "enum": ["none", "windFree", "childLock"],
-              "enumNames": ["사용 안 함", "무풍(WindFree)", "어린이 보호용 잠금장치(Child Lock)"],
+              "enum": ["none", "windFree"],
+              "enumNames": ["사용 안 함", "무풍(WindFree)"],
               "default": "windFree"
             },
             "lockBinding": {
               "title": "어린이 보호용 잠금장치(Lock) 토글 ↔ 기능",
               "type": "string",
-              "enum": ["none", "autoClean", "childLock"],
-              "enumNames": ["사용 안 함", "자동건조(Auto Clean)", "어린이 보호용 잠금장치(Child Lock)"],
+              "enum": ["none", "autoClean"],
+              "enumNames": ["사용 안 함", "자동건조(Auto Clean)"],
               "default": "autoClean"
             },
             "exposeWindFreeSwitch": {
@@ -75,7 +75,7 @@
               "default": false
             }
           },
-          "required": ["deviceLabel"]
+          "required": ["deviceLabel", "coolModeCommand", "swingBinding", "lockBinding"]
         }
       }
     },
