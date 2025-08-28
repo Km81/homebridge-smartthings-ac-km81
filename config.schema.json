@@ -58,23 +58,18 @@
               "title": "스윙(Swing) 토글 ↔ 기능",
               "type": "string",
               "enum": ["none", "windFree", "childLock"],
-              "enumNames": ["사용 안 함", "무풍(WindFree)", "차일드락(Child Lock)"],
+              "enumNames": ["사용 안 함", "무풍(WindFree)", "어린이 보호용 잠금장치(Child Lock)"],
               "default": "windFree"
             },
             "lockBinding": {
-              "title": "차일드락(Lock) 토글 ↔ 기능",
+              "title": "어린이 보호용 잠금장치(Lock) 토글 ↔ 기능",
               "type": "string",
               "enum": ["none", "autoClean", "childLock"],
-              "enumNames": ["사용 안 함", "자동건조(Auto Clean)", "차일드락(Child Lock)"],
+              "enumNames": ["사용 안 함", "자동건조(Auto Clean)", "어린이 보호용 잠금장치(Child Lock)"],
               "default": "autoClean"
             },
             "exposeWindFreeSwitch": {
               "title": "무풍 별도 스위치 노출",
-              "type": "boolean",
-              "default": false
-            },
-            "exposeChildLockSwitch": {
-              "title": "차일드락 별도 스위치 노출",
               "type": "boolean",
               "default": false
             },
@@ -121,7 +116,6 @@
           "title": "별도 스위치 노출",
           "items": [
             "devices[].exposeWindFreeSwitch",
-            "devices[].exposeChildLockSwitch",
             "devices[].exposeAutoCleanSwitch"
           ]
         }
