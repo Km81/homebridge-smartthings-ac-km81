@@ -44,7 +44,7 @@
               "default": "autoClean"
             },
 
-            "exposeWindFreeSwitch": { "title": "무풍 별도 스위치 노출",  "type": "boolean", "default": false },
+            "exposeWindFreeSwitch": { "title": "무풍 별도 스위치 노출",   "type": "boolean", "default": false },
             "exposeAutoCleanSwitch":{ "title": "자동건조 별도 스위치 노출","type": "boolean", "default": false }
           },
           "required": ["deviceLabel", "coolModeCommand", "swingBinding", "lockBinding"]
@@ -71,35 +71,37 @@
       "arrayItemCardTitle": "deviceLabel",
       "items": [
         {
-          "type": "section",
           "items": [
-            "deviceLabel",
-            "model",
-            "serialNumber",
+            { "key": "deviceLabel", "title": "에어컨 이름 (SmartThings 레이블)" },
+            { "key": "model",       "title": "모델명 (선택)" },
+            { "key": "serialNumber","title": "일련번호 (선택)" },
 
             { "type": "help", "help": "<b>모드/기능 매핑</b>" },
-            { "key": "coolModeCommand", "type": "select",
+            { "key": "coolModeCommand", "type": "select", "title": "HomeKit '냉방(COOL)' 전송 모드",
               "titleMap": [
                 { "value": "dry",  "name": "제습(Dry)로 명령" },
                 { "value": "cool", "name": "냉방(Cool)로 명령" }
-              ]
+              ],
+              "default": "dry"
             },
-            { "key": "swingBinding", "type": "select",
+            { "key": "swingBinding", "type": "select", "title": "스윙(Swing) 토글 ↔ 기능",
               "titleMap": [
                 { "value": "windFree", "name": "무풍(WindFree)" },
                 { "value": "none",      "name": "사용 안 함" }
-              ]
+              ],
+              "default": "windFree"
             },
-            { "key": "lockBinding", "type": "select",
+            { "key": "lockBinding", "type": "select", "title": "어린이 보호용 잠금장치(Lock) 토글 ↔ 기능",
               "titleMap": [
                 { "value": "autoClean", "name": "자동건조(Auto Clean)" },
                 { "value": "none",      "name": "사용 안 함" }
-              ]
+              ],
+              "default": "autoClean"
             },
 
             { "type": "help", "help": "<b>별도 스위치 노출</b>" },
-            { "key": "exposeWindFreeSwitch",  "type": "checkbox" },
-            { "key": "exposeAutoCleanSwitch", "type": "checkbox" }
+            { "key": "exposeWindFreeSwitch",  "type": "checkbox", "title": "무풍 별도 스위치 노출" },
+            { "key": "exposeAutoCleanSwitch", "type": "checkbox", "title": "자동건조 별도 스위치 노출" }
           ]
         }
       ]
