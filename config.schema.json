@@ -9,39 +9,43 @@
       "clientId": { "title": "Client ID", "type": "string" },
       "clientSecret": { "title": "Client Secret", "type": "string" },
       "redirectUri": { "title": "Redirect URI", "type": "string", "default": "http://localhost:8999/oauth/callback" },
+
       "devices": {
-        "title": "연동할 에어컨 장치",
+        "title": "에어컨 목록",
         "type": "array",
         "default": [],
         "items": {
           "type": "object",
           "properties": {
-            "deviceLabel": { "title": "Device Label (SmartThings 레이블)", "type": "string" },
-            "model": { "title": "Model (선택)", "type": "string" },
-            "serialNumber": { "title": "Serial Number (선택)", "type": "string" },
+            "deviceLabel": { "title": "에어컨 이름 (SmartThings 레이블)", "type": "string" },
+            "model":       { "title": "모델명 (선택)",                "type": "string" },
+            "serialNumber":{ "title": "일련번호 (선택)",              "type": "string" },
 
             "coolModeCommand": {
-              "title": "HomeKit 'COOL' 전송 모드",
+              "title": "HomeKit '냉방(COOL)' 전송 모드",
               "type": "string",
               "enum": ["dry", "cool"],
               "enumNames": ["제습(Dry)로 명령", "냉방(Cool)로 명령"],
+              "default": "dry",
               "description": "Home에서 '냉방'을 선택했을 때 실제 에어컨에 보낼 모드"
             },
             "swingBinding": {
               "title": "스윙(Swing) 토글 ↔ 기능",
               "type": "string",
               "enum": ["windFree", "none"],
-              "enumNames": ["무풍(WindFree)", "사용 안 함"]
+              "enumNames": ["무풍(WindFree)", "사용 안 함"],
+              "default": "windFree"
             },
             "lockBinding": {
               "title": "어린이 보호용 잠금장치(Lock) 토글 ↔ 기능",
               "type": "string",
               "enum": ["autoClean", "none"],
-              "enumNames": ["자동건조(Auto Clean)", "사용 안 함"]
+              "enumNames": ["자동건조(Auto Clean)", "사용 안 함"],
+              "default": "autoClean"
             },
 
-            "exposeWindFreeSwitch": { "title": "무풍 별도 스위치 노출", "type": "boolean" },
-            "exposeAutoCleanSwitch": { "title": "자동건조 별도 스위치 노출", "type": "boolean" }
+            "exposeWindFreeSwitch": { "title": "무풍 별도 스위치 노출",  "type": "boolean", "default": false },
+            "exposeAutoCleanSwitch":{ "title": "자동건조 별도 스위치 노출","type": "boolean", "default": false }
           },
           "required": ["deviceLabel", "coolModeCommand", "swingBinding", "lockBinding"]
         }
@@ -65,7 +69,6 @@
       "orderable": true,
       "addButtonText": "ADD 에어컨 목록",
       "arrayItemCardTitle": "deviceLabel",
-
       "items": [
         {
           "type": "section",
@@ -95,7 +98,7 @@
             },
 
             { "type": "help", "help": "<b>별도 스위치 노출</b>" },
-            { "key": "exposeWindFreeSwitch", "type": "checkbox" },
+            { "key": "exposeWindFreeSwitch",  "type": "checkbox" },
             { "key": "exposeAutoCleanSwitch", "type": "checkbox" }
           ]
         }
@@ -103,4 +106,3 @@
     }
   ]
 }
-
