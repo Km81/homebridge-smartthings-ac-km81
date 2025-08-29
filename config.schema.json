@@ -16,12 +16,12 @@
         "items": {
           "type": "object",
           "properties": {
-            "deviceLabel": { "title": "에어컨 이름 (SmartThings 레이블)", "type": "string" },
-            "model": { "title": "모델명 (선택)", "type": "string" },
-            "serialNumber": { "title": "일련번호 (선택)", "type": "string" },
+            "deviceLabel": { "title": "Device Label (SmartThings 레이블)", "type": "string" },
+            "model": { "title": "Model (선택)", "type": "string" },
+            "serialNumber": { "title": "Serial Number (선택)", "type": "string" },
 
             "coolModeCommand": {
-              "title": "HomeKit '냉방(COOL)' 전송 모드",
+              "title": "HomeKit 'COOL' 전송 모드",
               "type": "string",
               "enum": ["dry", "cool"],
               "enumNames": ["제습(Dry)로 명령", "냉방(Cool)로 명령"],
@@ -65,40 +65,41 @@
       "orderable": true,
       "addButtonText": "ADD 에어컨 목록",
       "arrayItemCardTitle": "deviceLabel",
+
+      /* ⬇⬇⬇ 배열의 '아이템 카드'는 단 하나의 레이아웃 객체로 묶습니다 */
       "items": [
-        "deviceLabel",
-        "model",
-        "serialNumber",
+        {
+          "type": "section",
+          "items": [
+            "deviceLabel",
+            "model",
+            "serialNumber",
 
-        { "type": "help", "help": "<b>모드/기능 매핑</b>" },
-        {
-          "key": "coolModeCommand",
-          "type": "select",
-          "titleMap": [
-            { "value": "dry",  "name": "제습(Dry)로 명령" },
-            { "value": "cool", "name": "냉방(Cool)로 명령" }
-          ]
-        },
-        {
-          "key": "swingBinding",
-          "type": "select",
-          "titleMap": [
-            { "value": "windFree", "name": "무풍(WindFree)" },
-            { "value": "none",      "name": "사용 안 함" }
-          ]
-        },
-        {
-          "key": "lockBinding",
-          "type": "select",
-          "titleMap": [
-            { "value": "autoClean", "name": "자동건조(Auto Clean)" },
-            { "value": "none",      "name": "사용 안 함" }
-          ]
-        },
+            { "type": "help", "help": "<b>모드/기능 매핑</b>" },
+            { "key": "coolModeCommand", "type": "select",
+              "titleMap": [
+                { "value": "dry",  "name": "제습(Dry)로 명령" },
+                { "value": "cool", "name": "냉방(Cool)로 명령" }
+              ]
+            },
+            { "key": "swingBinding", "type": "select",
+              "titleMap": [
+                { "value": "windFree", "name": "무풍(WindFree)" },
+                { "value": "none",      "name": "사용 안 함" }
+              ]
+            },
+            { "key": "lockBinding", "type": "select",
+              "titleMap": [
+                { "value": "autoClean", "name": "자동건조(Auto Clean)" },
+                { "value": "none",      "name": "사용 안 함" }
+              ]
+            },
 
-        { "type": "help", "help": "<b>별도 스위치 노출</b>" },
-        { "key": "exposeWindFreeSwitch", "type": "checkbox" },
-        { "key": "exposeAutoCleanSwitch", "type": "checkbox" }
+            { "type": "help", "help": "<b>별도 스위치 노출</b>" },
+            { "key": "exposeWindFreeSwitch", "type": "checkbox" },
+            { "key": "exposeAutoCleanSwitch", "type": "checkbox" }
+          ]
+        }
       ]
     }
   ]
