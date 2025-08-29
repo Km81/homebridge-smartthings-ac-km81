@@ -13,8 +13,6 @@
 - **부가 기능 지원**  
   - **무풍 모드**: HomeKit의 ‘스윙’ 토글로 켜고 끌 수 있습니다.  
   - **자동건조 모드**: HomeKit의 ‘물리 제어 잠금’(Lock) 토글로 켜고 끌 수 있습니다.  
-- **안전한 인증**: SmartThings 공식 OAuth 2.0 인증 사용.  
-- **간편한 최초 인증**: 플러그인이 로컬 인증 서버(기본 8999 포트)를 잠시 구동해 브라우저 한 번으로 토큰 발급.
 
 ---
 
@@ -235,4 +233,5 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 | `lockBinding` | `autoClean` / `none` | `autoClean` | 잠금 ↔ 자동건조 매핑 또는 숨김 |
 | `exposeWindFreeSwitch` | `true/false` | `false` | 무풍 별도 스위치 생성 |
 | `exposeAutoCleanSwitch` | `true/false` | `false` | 자동건조 별도 스위치 생성 |
+
 
