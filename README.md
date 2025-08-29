@@ -25,11 +25,11 @@
 
 2. **스윙(Swing) 토글 ↔ 기능 매핑**  
    - `무풍(WindFree)` / `사용 안 함` 중 택1.  
-   - `사용 안 함`이면 스윙 특성 자체가 숨겨집니다.
+
 
 3. **어린이 보호용 잠금장치(Lock) 토글 ↔ 기능 매핑**  
    - `자동건조(Auto Clean)` / `사용 안 함` 중 택1.  
-   - (명칭 정비: 기존 ‘차일드락’ → **‘어린이 보호용 잠금장치’**)
+
 
 4. **별도 스위치 노출(선택)**  
    - `무풍 별도 스위치 노출`, `자동건조 별도 스위치 노출` 체크 시 **개별 Switch 액세서리**가 생성됩니다.
@@ -233,6 +233,7 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 | `lockBinding` | `autoClean` / `none` | `autoClean` | 잠금 ↔ 자동건조 매핑 또는 숨김 |
 | `exposeWindFreeSwitch` | `true/false` | `false` | 무풍 별도 스위치 생성 |
 | `exposeAutoCleanSwitch` | `true/false` | `false` | 자동건조 별도 스위치 생성 |
+
 
 
 
