@@ -2,17 +2,42 @@
 
 삼성 시스템 에어컨을 SmartThings API를 통해 HomeKit에 연동하기 위한 Homebridge 플러그인입니다. 이 플러그인은 HomeKit 환경에서 에어컨을 더 단순하고 직관적으로 사용하고자 하는 목적에 맞춰져 있으며, 특히 **냉방/제습 위주의 사용**에 최적화되어 있습니다.
 
+---
+
 ## 주요 기능
 
-* **HomeKit을 통한 삼성 시스템 에어컨 제어**: 전원, 온도 설정 등 기본적인 제어가 가능합니다.
-* **단순화된 제어 모드**: HomeKit UI의 복잡성을 줄이기 위해 제어 모드를 **'냉방'과 '끔'**으로 제한했습니다. '난방' 및 '자동' 모드는 UI에 표시되지 않습니다.
-* **제습 모드 연동**: HomeKit에서 '냉방' 모드를 선택하면, 실제 에어컨은 **'제습(Dry)' 모드로 동작**합니다. 여름철 습도 관리에 유용합니다.
-* **통합된 '냉방 중' 상태**: 에어컨의 실제 동작 모드(냉방, 제습, 송풍 등)와 관계없이, **전원이 켜져 있다면 HomeKit에서는 항상 '냉방 중'**으로 상태가 표시됩니다.
-* **부가 기능 지원**:
-    * **무풍 모드**: HomeKit의 '스윙' 기능으로 켜고 끌 수 있습니다.
-    * **자동 건조 모드**: HomeKit의 '물리 제어 잠금' 기능으로 켜고 끌 수 있습니다.
-* **안전한 인증**: SmartThings의 공식 OAuth 2.0 인증 방식을 사용하여 안전하게 계정을 연동합니다.
-* **간편한 최초 인증**: 플러그인이 로컬 인증 서버를 잠시 구동하여 복잡한 과정 없이 토큰을 발급받을 수 있습니다.
+- **HomeKit을 통한 삼성 시스템 에어컨 제어**: 전원, 온도 설정 등 기본 제어가 가능합니다.  
+- **단순화된 제어 모드**: HomeKit UI의 복잡성을 줄이기 위해 제어 모드를 **‘냉방’과 ‘끔’**으로 제한했습니다. ‘난방’ 및 ‘자동’ 모드는 UI에 표시되지 않습니다.  
+- **제습 모드 연동**: HomeKit에서 ‘냉방’ 모드를 선택하면 실제 에어컨은 기본적으로 **‘제습(Dry)’ 모드로 동작**합니다. (설정에서 ‘냉방(Cool)’로 전송하도록 변경 가능)  
+- **통합된 ‘냉방 중’ 상태**: 에어컨의 실제 동작 모드(냉방/제습/송풍 등)와 관계없이 **전원이 켜져 있으면 HomeKit에서는 항상 ‘냉방 중’**으로 상태가 표시됩니다.  
+- **부가 기능 지원**  
+  - **무풍 모드**: HomeKit의 ‘스윙’ 토글로 켜고 끌 수 있습니다.  
+  - **자동건조 모드**: HomeKit의 ‘물리 제어 잠금’(Lock) 토글로 켜고 끌 수 있습니다.  
+- **안전한 인증**: SmartThings 공식 OAuth 2.0 인증 사용.  
+- **간편한 최초 인증**: 플러그인이 로컬 인증 서버(기본 8999 포트)를 잠시 구동해 브라우저 한 번으로 토큰 발급.
+
+---
+
+## 🆕 이번 업데이트로 추가된 기능(홈브릿지 UI에서 설정 가능)
+
+1. **HomeKit ‘냉방(COOL)’ 전송 모드 선택**  
+   - `제습(Dry)로 명령`(기본) / `냉방(Cool)로 명령` 중 택1.  
+   - 이 선택은 **Home에서 ‘냉방’을 누를 때 SmartThings로 어떤 모드를 보낼지**를 결정합니다.  
+     (표시 로직은 그대로: 전원이 켜져 있으면 HomeKit 상태는 ‘냉방 중’)
+
+2. **스윙(Swing) 토글 ↔ 기능 매핑**  
+   - `무풍(WindFree)` / `사용 안 함` 중 택1.  
+   - `사용 안 함`이면 스윙 특성 자체가 숨겨집니다.
+
+3. **어린이 보호용 잠금장치(Lock) 토글 ↔ 기능 매핑**  
+   - `자동건조(Auto Clean)` / `사용 안 함` 중 택1.  
+   - (명칭 정비: 기존 ‘차일드락’ → **‘어린이 보호용 잠금장치’**)
+
+4. **별도 스위치 노출(선택)**  
+   - `무풍 별도 스위치 노출`, `자동건조 별도 스위치 노출` 체크 시 **개별 Switch 액세서리**가 생성됩니다.
+
+> 매칭 기준: SmartThings의 **장치 레이블(deviceLabel)**. 한국어 정규화(NFC) 처리는 해주지만, **띄어쓰기/철자**는 정확히 일치해야 합니다.
+
 
 ## 사전 준비
 
@@ -59,6 +84,7 @@ SmartThings의 보안 정책 변경으로 인해, 이제 **`https` 프로토콜�
         * 포트: **`8999` (고정)**
 3.  설정을 저장합니다.
 4.  이제 외부 주소인 **`https://myhome.myds.me:9002`** 를 다음 단계에서 사용합니다.
+   
 
 ### 2단계: SmartThings API Key 발급 (CLI 방식)
 
@@ -106,9 +132,10 @@ SmartThings의 보안 정책 변경으로 인해, 이제 **`https` 프로토콜�
 5.  **결과 확인 및 정보 저장**
     모든 절차가 완료되면 터미널에 `OAuth Client Id`와 `OAuth Client Secret` 값이 출력됩니다. 이 정보는 다시 확인할 수 없으므로 **반드시 지금 복사하여 저장**해야 합니다.
 
+
 ### 3단계: Homebridge `config.json` 설정
 
-Homebridge UI 또는 `config.json` 파일을 직접 수정하여 아래 내용을 추가합니다.
+Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 
 ```json
 {
@@ -116,23 +143,53 @@ Homebridge UI 또는 `config.json` 파일을 직접 수정하여 아래 내용�
   "name": "SmartThings AC",
   "clientId": "YOUR_CLIENT_ID",
   "clientSecret": "YOUR_CLIENT_SECRET",
-  "redirectUri": "[https://myhome.myds.me:9002](https://myhome.myds.me:9002)",
+  "redirectUri": "https://myhome.myds.me:9002",
   "devices": [
     {
-      "deviceLabel": "거실 에어컨"
+      "deviceLabel": "거실 에어컨",
+      "model": "AW06C7155WWA",
+      "serialNumber": "OLC5PDOY601505H",
+      "coolModeCommand": "dry",
+      "swingBinding": "windFree",
+      "lockBinding": "autoClean",
+      "exposeWindFreeSwitch": false,
+      "exposeAutoCleanSwitch": false
     },
     {
-      "deviceLabel": "안방 에어컨"
+      "deviceLabel": "안방 에어컨",
+      "coolModeCommand": "cool",
+      "swingBinding": "none",
+      "lockBinding": "autoClean",
+      "exposeWindFreeSwitch": true,
+      "exposeAutoCleanSwitch": true
     }
   ]
 }
 ```
 
-* **`platform`**: `SmartThingsAC-KM81` 로 고정합니다.
-* **`clientId`**: 2단계에서 발급받은 **OAuth Client Id**를 입력합니다.
-* **`clientSecret`**: 2단계에서 발급받은 **OAuth Client Secret**을 입력합니다.
-* **`redirectUri`**: 1, 2단계에서 설정한 **리버스 프록시의 외부 `https` 주소**를 정확히 동일하게 입력합니다.
-* **`devices`**: SmartThings 앱에 표시되는 에어컨의 이름과 정확히 일치해야 합니다.
+- `platform`: **SmartThingsAC-KM81**  
+- `redirectUri`: 리버스 프록시 외부 **HTTPS** 주소와 정확히 동일해야 함  
+- `deviceLabel`: SmartThings 앱의 레이블과 **완전 일치**(띄어쓰기/대소문자 포함)
+
+
+## 설정 (Homebridge UI에서 빠르게)
+
+1. 플러그인 설정 → `Client ID`, `Client Secret`, `Redirect URI(https)` 입력  
+2. **에어컨 목록** → `ADD 에어컨 목록` → 장치 카드 1개 생성  
+3. 카드 안에서 입력
+   - **에어컨 이름(SmartThings 레이블)** *(필수)*
+   - **모델명 / 일련번호** *(선택)*
+   - **HomeKit ‘냉방(COOL)’ 전송 모드**: `제습(Dry)` 또는 `냉방(Cool)`
+   - **스윙 토글 ↔ 기능**: `무풍(WindFree)` 또는 `사용 안 함)`
+   - **어린이 보호용 잠금장치 토글 ↔ 기능**: `자동건조(Auto Clean)` 또는 `사용 안 함`
+   - **무풍/자동건조 별도 스위치 노출** *(필요 시 체크)*
+4. 저장 후 Homebridge 재시작 → 반영된 액세서리가 생성
+
+> **팁**  
+> - 카드 우상단 **X 하나**만 보여야 정상(장치 한 대 삭제).  
+> - 드롭다운은 기본값이 들어가 **‘None’ 없음**.  
+> - 저장 후 `config.json`의 `devices`에 **입력 값이 그대로 기록**되어야 합니다.
+
 
 ### 4단계: 플러그인 최초 인증
 
@@ -143,15 +200,18 @@ Homebridge UI 또는 `config.json` 파일을 직접 수정하여 아래 내용�
 5.  "인증 성공!" 메시지가 브라우저에 표시되면 정상적으로 완료된 것입니다.
 6.  다시 Homebridge를 **재시작**하면 플러그인이 에어컨 장치를 인식하고 HomeKit에 추가합니다.
 
+
 ## 상세 기능 설명
 
 | HomeKit 기능 | 실제 에어컨 동작 | 비고 |
-| :--- | :--- | :--- |
-| **상태** (State) | 꺼짐: `비활성(Inactive)` <br> 켜짐: `냉방 중(Cooling)` | 에어컨이 켜져 있으면 실제 모드와 관계없이 항상 '냉방 중'으로 표시됩니다. |
-| **모드** (Mode) | UI에 '냉방(Cool)'만 표시 <br> '냉방' 선택 시 `제습(Dry)` 모드로 설정 | 난방/자동 모드는 UI에서 제거되어 선택할 수 없습니다. |
-| **온도 설정** (Temp) | 희망 온도(18°C \~ 30°C) 설정 | 일반적인 온도 제어와 동일합니다. |
-| **스윙** (Swing) | 켜짐: `무풍(Wind-Free)` 모드 On <br> 꺼짐: `무풍(Wind-Free)` 모드 Off | HomeKit의 스윙 토글을 이용해 무풍 모드를 제어합니다. |
-| **물리 제어 잠금** (Lock) | 켜짐: `자동 건조(Auto Clean)` 모드 On <br> 꺼짐: `자동 건조(Auto Clean)` 모드 Off | HomeKit의 부가 기능 토글을 재활용하여 자동 건조 기능을 제어합니다. |
+| --- | --- | --- |
+| **상태(State)** | 꺼짐: `비활성(Inactive)`<br>켜짐: `냉방 중(Cooling)` | 전원이 켜져 있으면 실제 모드와 관계없이 항상 ‘냉방 중’으로 표시 |
+| **모드(Mode)** | UI에 ‘냉방(Cool)’만 표시<br>‘냉방’ 선택 시 `제습(Dry)` 또는 `냉방(Cool)`(설정값)으로 전송 | **전송 모드 선택** 옵션 추가 |
+| **온도 설정(Temp)** | 희망 온도(18–30℃) 설정 | 일반 제어와 동일 |
+| **스윙(Swing)** | On: `무풍(WindFree)` 켜짐<br>Off: `무풍(WindFree)` 꺼짐 | 매핑을 ‘사용 안 함’으로 두면 스윙 특성 숨김 |
+| **물리 제어 잠금(Lock)** | On: `자동건조(Auto Clean)` 켜짐<br>Off: `자동건조(Auto Clean)` 꺼짐 | 명칭을 ‘어린이 보호용 잠금장치’로 표기. ‘사용 안 함’이면 특성 숨김 |
+| **별도 스위치(Switch)** | `무풍`, `자동건조`를 개별 스위치로 제어 | 설정에서 각각의 노출 옵션을 켜면 생성 |
+
 
 ## 문제 해결 (Troubleshooting)
 
@@ -161,3 +221,18 @@ Homebridge UI 또는 `config.json` 파일을 직접 수정하여 아래 내용�
 * **인증이 실패하거나 "invalid\_grant" 오류가 발생할 경우:**
     * `config.json`의 `clientId`, `clientSecret`, `redirectUri` 값이 올바르게 입력되었는지 다시 한번 확인하세요.
     * Homebridge 서버가 실행 중인 기기의 방화벽이 `8999` 포트를 차단하고 있지 않은지, 그리고 **리버스 프록시 설정이 올바른지** 확인하세요.
+ 
+
+## 부록: 설정 항목 요약
+
+| 키 | 값 | 기본값 | 설명 |
+| --- | --- | --- | --- |
+| `deviceLabel` | 문자열 | (필수) | SmartThings 레이블과 동일해야 매칭 |
+| `model` | 문자열 | `""` | 표시용(선택) |
+| `serialNumber` | 문자열 | `""` | 표시용(선택) |
+| `coolModeCommand` | `dry` / `cool` | `dry` | Home에서 ‘냉방’ 선택 시 ST에 보낼 명령 |
+| `swingBinding` | `windFree` / `none` | `windFree` | 스윙 ↔ 무풍 매핑 또는 숨김 |
+| `lockBinding` | `autoClean` / `none` | `autoClean` | 잠금 ↔ 자동건조 매핑 또는 숨김 |
+| `exposeWindFreeSwitch` | `true/false` | `false` | 무풍 별도 스위치 생성 |
+| `exposeAutoCleanSwitch` | `true/false` | `false` | 자동건조 별도 스위치 생성 |
+
