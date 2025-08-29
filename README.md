@@ -36,13 +36,13 @@
 
 > 매칭 기준: SmartThings의 **장치 레이블(deviceLabel)**. 한국어 정규화(NFC) 처리는 해주지만, **띄어쓰기/철자**는 정확히 일치해야 합니다.
 
-
+---
 ## 사전 준비
 
 1.  [Homebridge](https://homebridge.io/)가 설치되어 있어야 합니다. (Homebridge UI 사용을 권장합니다.)
 2.  **Node.js 18.0.0 이상** 버전이 필요합니다.
 3.  SmartThings 계정이 있어야 하며, 제어하려는 에어컨이 SmartThings 앱에 정상적으로 등록되어 있어야 합니다.
-
+---
 ## 설치
 
 Homebridge UI의 '플러그인' 탭에서 `homebridge-smartthings-ac-km81`을 검색하여 설치하거나, 터미널에서 아래 명령어를 직접 실행합니다.
@@ -52,11 +52,11 @@ npm install -g homebridge-smartthings-ac-km81
 ```
 
 ***
-
+---
 ## 설정 (리버스 프록시 필수)
 
 SmartThings의 보안 정책 변경으로 인해, 이제 **`https` 프로토콜을 사용하는 주소만** 인증을 위한 Redirect URI로 등록할 수 있습니다. 따라서 외부에서 `https`로 접속할 수 있는 환경을 만들고, 이를 내부 Homebridge의 `http` 주소로 전달해주는 **리버스 프록시(Reverse Proxy)** 설정이 **필수**입니다.
-
+---
 ### 1단계: 리버스 프록시 설정 및 HTTPS 주소 준비
 
 가장 먼저 외부에서 접속 가능한 `https` 주소를 준비해야 합니다. Synology NAS, Nginx Proxy Manager 등 다양한 도구를 사용할 수 있습니다.
@@ -83,7 +83,7 @@ SmartThings의 보안 정책 변경으로 인해, 이제 **`https` 프로토콜�
 3.  설정을 저장합니다.
 4.  이제 외부 주소인 **`https://myhome.myds.me:9002`** 를 다음 단계에서 사용합니다.
    
-
+---
 ### 2단계: SmartThings API Key 발급 (CLI 방식)
 
 1.  **SmartThings CLI 설치**
@@ -130,7 +130,7 @@ SmartThings의 보안 정책 변경으로 인해, 이제 **`https` 프로토콜�
 5.  **결과 확인 및 정보 저장**
     모든 절차가 완료되면 터미널에 `OAuth Client Id`와 `OAuth Client Secret` 값이 출력됩니다. 이 정보는 다시 확인할 수 없으므로 **반드시 지금 복사하여 저장**해야 합니다.
 
-
+---
 ### 3단계: Homebridge `config.json` 설정
 
 Homebridge UI로 입력하거나 `config.json`에 직접 추가:
@@ -188,7 +188,7 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 > - 드롭다운은 기본값이 들어가 **‘None’ 없음**.  
 > - 저장 후 `config.json`의 `devices`에 **입력 값이 그대로 기록**되어야 합니다.
 
-
+---
 ### 4단계: 플러그인 최초 인증
 
 1.  설정 저장이 완료되면 Homebridge를 **재시작**합니다.
@@ -210,7 +210,7 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 | **물리 제어 잠금(Lock)** | On: `자동건조(Auto Clean)` 켜짐<br>Off: `자동건조(Auto Clean)` 꺼짐 | 명칭을 ‘어린이 보호용 잠금장치’로 표기. ‘사용 안 함’이면 특성 숨김 |
 | **별도 스위치(Switch)** | `무풍`, `자동건조`를 개별 스위치로 제어 | 설정에서 각각의 노출 옵션을 켜면 생성 |
 
-
+---
 ## 문제 해결 (Troubleshooting)
 
 * **"장치를 찾지 못했습니다" 로그가 표시될 경우:**
@@ -220,7 +220,7 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
     * `config.json`의 `clientId`, `clientSecret`, `redirectUri` 값이 올바르게 입력되었는지 다시 한번 확인하세요.
     * Homebridge 서버가 실행 중인 기기의 방화벽이 `8999` 포트를 차단하고 있지 않은지, 그리고 **리버스 프록시 설정이 올바른지** 확인하세요.
  
-
+---
 ## 부록: 설정 항목 요약
 
 | 키 | 값 | 기본값 | 설명 |
@@ -233,5 +233,6 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 | `lockBinding` | `autoClean` / `none` | `autoClean` | 잠금 ↔ 자동건조 매핑 또는 숨김 |
 | `exposeWindFreeSwitch` | `true/false` | `false` | 무풍 별도 스위치 생성 |
 | `exposeAutoCleanSwitch` | `true/false` | `false` | 자동건조 별도 스위치 생성 |
+
 
 
