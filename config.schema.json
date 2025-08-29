@@ -74,7 +74,6 @@
         "devices[].model",
         "devices[].serialNumber",
 
-        { "type": "help", "help": "<b>모드/기능 매핑</b>" },
         { "key": "devices[].coolModeCommand", "type": "select",
           "title": "HomeKit '냉방(COOL)' 전송 모드",
           "titleMap": [
@@ -97,10 +96,10 @@
           ]
         },
 
-        { "type": "help", "help": "<b>별도 스위치 노출</b>" },
         { "key": "devices[].exposeWindFreeSwitch",  "type": "checkbox", "title": "무풍 별도 스위치 노출" },
         { "key": "devices[].exposeAutoCleanSwitch", "type": "checkbox", "title": "자동건조 별도 스위치 노출" }
       ]
     }
   ]
 }
+
