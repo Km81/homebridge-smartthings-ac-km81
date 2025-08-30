@@ -140,7 +140,6 @@
         { "key": "devices[].exposeWindFreeSwitch",  "type": "checkbox", "title": "무풍 별도 스위치 노출" },
         { "key": "devices[].exposeAutoCleanSwitch", "type": "checkbox", "title": "자동건조 별도 스위치 노출" },
 
-        { "type": "help", "help": "<b>이 장치 전용 목표온도 범위/스텝</b> — 입력 시 플랫폼 기본값을 덮어씁니다." },
         "devices[].temperatureMin",
         "devices[].temperatureMax",
         "devices[].temperatureStep"
@@ -148,3 +147,4 @@
     }
   ]
 }
+
