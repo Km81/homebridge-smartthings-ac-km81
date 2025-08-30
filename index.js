@@ -1,4 +1,4 @@
-// index.js v2.4.10
+// index.js v2.5.0
 'use strict';
 
 const SmartThings = require('./lib/SmartThings');
@@ -13,6 +13,44 @@ const PLATFORM_NAME = 'SmartThingsAC-KM81';
 const PLUGIN_NAME = 'homebridge-smartthings-ac-km81';
 
 const normalizeKorean = s => (s || '').normalize('NFC').trim();
+
+// 숫자/경계 보정 유틸
+function clampNumber(value, min, max) {
+  const n = Number(value);
+  if (!isFinite(n)) return min;
+  if (n < min) return min;
+  if (n > max) return max;
+  return n;
+}
+function resolveTempProps(platformCfg = {}, deviceCfg = {}) {
+  // 우선순위: 디바이스별 > 플랫폼 기본 > 하드코딩 기본
+  const DEFAULTS = { min: 18, max: 30, step: 1 };
+
+  const min = Number.isFinite(deviceCfg.temperatureMin)
+    ? deviceCfg.temperatureMin
+    : Number.isFinite(platformCfg.temperatureMin)
+      ? platformCfg.temperatureMin
+      : DEFAULTS.min;
+
+  const max = Number.isFinite(deviceCfg.temperatureMax)
+    ? deviceCfg.temperatureMax
+    : Number.isFinite(platformCfg.temperatureMax)
+      ? platformCfg.temperatureMax
+      : DEFAULTS.max;
+
+  const step = Number.isFinite(deviceCfg.temperatureStep)
+    ? deviceCfg.temperatureStep
+    : Number.isFinite(platformCfg.temperatureStep)
+      ? platformCfg.temperatureStep
+      : DEFAULTS.step;
+
+  // 안전 보정: min < max, step >= 0.1
+  const safeStep = step >= 0.1 ? step : DEFAULTS.step;
+  const safeMin = Math.min(min, max - safeStep); // min이 max를 넘지 않도록
+  const safeMax = Math.max(max, safeMin + safeStep);
+
+  return { minValue: safeMin, maxValue: safeMax, minStep: safeStep };
+}
 
 module.exports = (homebridge) => {
   Accessory = homebridge.platformAccessory;
@@ -284,13 +322,18 @@ class SmartThingsACPlatform {
       getter: () => this.smartthings.getCurrentTemperature(deviceId),
     });
 
-    // 목표(냉방) 온도
+    // 목표(냉방) 온도 — 설정값 기반으로 범위/스텝 적용
+    const tempProps = resolveTempProps(this.config || {}, configDevice || {});
     this._bindCharacteristic({
       service,
       characteristic: Characteristic.CoolingThresholdTemperature,
-      props: { minValue: 18, maxValue: 30, minStep: 1 },
-      getter: () => this.smartthings.getCoolingSetpoint(deviceId),
-      setter: (value) => this.smartthings.setTemperature(deviceId, value),
+      props: tempProps,
+      getter: async () => {
+        // 현재 ST 목표값을 읽고 범위 안으로 한 번 보정(오류 방지)
+        const current = await this.smartthings.getCoolingSetpoint(deviceId);
+        return clampNumber(current, tempProps.minValue, tempProps.maxValue);
+      },
+      setter: (value) => this.smartthings.setTemperature(deviceId, clampNumber(value, tempProps.minValue, tempProps.maxValue)),
     });
 
     // SwingMode: none / windFree
@@ -353,7 +396,7 @@ class SmartThingsACPlatform {
 
       const sw = acc.getService(Service.Switch) || acc.addService(Service.Switch, acc.displayName);
 
-      // 🔧 핵심 수정: Switch.On 은 boolean true/false 를 사용해야 함
+      // Switch.On 은 boolean true/false
       this._bindCharacteristic({
         service: sw,
         characteristic: Characteristic.On,
@@ -381,5 +424,3 @@ class SmartThingsACPlatform {
     }
   }
 }
-
-
