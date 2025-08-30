@@ -10,6 +10,25 @@
       "clientSecret": { "title": "Client Secret", "type": "string" },
       "redirectUri": { "title": "Redirect URI", "type": "string", "default": "http://localhost:8999/oauth/callback" },
 
+      "temperatureMin": {
+        "title": "기본 목표온도 최소값(℃)",
+        "type": "number",
+        "default": 18,
+        "description": "플랫폼 전체 기본값. 각 디바이스에서 별도로 지정하면 해당 값이 우선합니다."
+      },
+      "temperatureMax": {
+        "title": "기본 목표온도 최대값(℃)",
+        "type": "number",
+        "default": 30,
+        "description": "플랫폼 전체 기본값. 각 디바이스에서 별도로 지정하면 해당 값이 우선합니다."
+      },
+      "temperatureStep": {
+        "title": "기본 목표온도 스텝(℃)",
+        "type": "number",
+        "default": 1,
+        "description": "플랫폼 전체 기본값. 각 디바이스에서 별도로 지정하면 해당 값이 우선합니다."
+      },
+
       "devices": {
         "title": "에어컨 목록",
         "type": "array",
@@ -45,7 +64,23 @@
             },
 
             "exposeWindFreeSwitch":  { "title": "무풍 별도 스위치 노출",   "type": "boolean", "default": false },
-            "exposeAutoCleanSwitch": { "title": "자동건조 별도 스위치 노출","type": "boolean", "default": false }
+            "exposeAutoCleanSwitch": { "title": "자동건조 별도 스위치 노출","type": "boolean", "default": false },
+
+            "temperatureMin": {
+              "title": "목표온도 최소값(℃) *개별 장치",
+              "type": "number",
+              "default": null
+            },
+            "temperatureMax": {
+              "title": "목표온도 최대값(℃) *개별 장치",
+              "type": "number",
+              "default": null
+            },
+            "temperatureStep": {
+              "title": "목표온도 스텝(℃) *개별 장치",
+              "type": "number",
+              "default": null
+            }
           },
           "required": ["deviceLabel", "coolModeCommand", "swingBinding", "lockBinding"]
         }
@@ -60,6 +95,19 @@
     "clientId",
     "clientSecret",
     "redirectUri",
+
+    {
+      "type": "section",
+      "title": "기본 목표온도 범위/스텝 (플랫폼 전체 기본값)",
+      "expandable": true,
+      "expanded": false,
+      "items": [
+        "temperatureMin",
+        "temperatureMax",
+        "temperatureStep",
+        { "type": "help", "help": "각 디바이스 카드에서 개별 값 지정 시, 플랫폼 기본값 대신 해당 값이 적용됩니다." }
+      ]
+    },
 
     {
       "key": "devices",
@@ -97,9 +145,20 @@
         },
 
         { "key": "devices[].exposeWindFreeSwitch",  "type": "checkbox", "title": "무풍 별도 스위치 노출" },
-        { "key": "devices[].exposeAutoCleanSwitch", "type": "checkbox", "title": "자동건조 별도 스위치 노출" }
+        { "key": "devices[].exposeAutoCleanSwitch", "type": "checkbox", "title": "자동건조 별도 스위치 노출" },
+
+        {
+          "type": "section",
+          "title": "목표온도 범위/스텝 (이 장치 전용 — 입력 시 플랫폼 기본값을 덮어씀)",
+          "expandable": true,
+          "expanded": false,
+          "items": [
+            "devices[].temperatureMin",
+            "devices[].temperatureMax",
+            "devices[].temperatureStep"
+          ]
+        }
       ]
     }
   ]
 }
-
