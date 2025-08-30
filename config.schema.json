@@ -69,17 +69,17 @@
             "temperatureMin": {
               "title": "목표온도 최소값(℃) *개별 장치",
               "type": "number",
-              "default": null
+              "description": "비워두면 플랫폼 기본값을 사용"
             },
             "temperatureMax": {
               "title": "목표온도 최대값(℃) *개별 장치",
               "type": "number",
-              "default": null
+              "description": "비워두면 플랫폼 기본값을 사용"
             },
             "temperatureStep": {
               "title": "목표온도 스텝(℃) *개별 장치",
               "type": "number",
-              "default": null
+              "description": "비워두면 플랫폼 기본값을 사용"
             }
           },
           "required": ["deviceLabel", "coolModeCommand", "swingBinding", "lockBinding"]
