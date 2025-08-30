@@ -153,6 +153,9 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
   "clientId": "YOUR_CLIENT_ID",
   "clientSecret": "YOUR_CLIENT_SECRET",
   "redirectUri": "https://myhome.myds.me:9002",
+  "temperatureMin": 18,
+  "temperatureMax": 30,
+  "temperatureStep": 1,
   "devices": [
     {
       "deviceLabel": "거실 에어컨",
@@ -163,9 +166,12 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
       "lockBinding": "autoClean",
       "exposeWindFreeSwitch": false,
       "exposeAutoCleanSwitch": false
+      "temperatureMin": 16,
+      "temperatureMax": 32,
+      "temperatureStep": 0.5
     },
     {
-      "deviceLabel": "안방 에어컨",
+      "deviceLabel": "침실 에어컨",
       "coolModeCommand": "cool",
       "swingBinding": "none",
       "lockBinding": "autoClean",
@@ -244,6 +250,7 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 | `lockBinding` | `autoClean` / `none` | `autoClean` | 잠금 ↔ 자동건조 매핑 또는 숨김 |
 | `exposeWindFreeSwitch` | `true/false` | `false` | 무풍 별도 스위치 생성 |
 | `exposeAutoCleanSwitch` | `true/false` | `false` | 자동건조 별도 스위치 생성 |
+
 
 
 
