@@ -96,18 +96,11 @@
     "clientSecret",
     "redirectUri",
 
-    {
-      "type": "section",
-      "title": "기본 목표온도 범위/스텝 (플랫폼 전체 기본값)",
-      "expandable": true,
-      "expanded": false,
-      "items": [
-        "temperatureMin",
-        "temperatureMax",
-        "temperatureStep",
-        { "type": "help", "help": "각 디바이스 카드에서 개별 값 지정 시, 플랫폼 기본값 대신 해당 값이 적용됩니다." }
-      ]
-    },
+    { "type": "help", "help": "<b>기본 목표온도 범위/스텝 (플랫폼 전체 기본값)</b>" },
+    "temperatureMin",
+    "temperatureMax",
+    "temperatureStep",
+    { "type": "help", "help": "각 디바이스 카드에서 개별 값 지정 시, 플랫폼 기본값 대신 해당 값이 적용됩니다." },
 
     {
       "key": "devices",
@@ -115,7 +108,7 @@
       "title": "에어컨 목록",
       "startEmpty": true,
       "orderable": true,
-      "addButtonText": "ADD 에어컨 목록",
+      "addButtonText": "에어컨 추가",
       "arrayItemCardTitle": "deviceLabel",
       "items": [
         "devices[].deviceLabel",
@@ -147,17 +140,10 @@
         { "key": "devices[].exposeWindFreeSwitch",  "type": "checkbox", "title": "무풍 별도 스위치 노출" },
         { "key": "devices[].exposeAutoCleanSwitch", "type": "checkbox", "title": "자동건조 별도 스위치 노출" },
 
-        {
-          "type": "section",
-          "title": "목표온도 범위/스텝 (이 장치 전용 — 입력 시 플랫폼 기본값을 덮어씀)",
-          "expandable": true,
-          "expanded": false,
-          "items": [
-            "devices[].temperatureMin",
-            "devices[].temperatureMax",
-            "devices[].temperatureStep"
-          ]
-        }
+        { "type": "help", "help": "<b>이 장치 전용 목표온도 범위/스텝</b> — 입력 시 플랫폼 기본값을 덮어씁니다." },
+        "devices[].temperatureMin",
+        "devices[].temperatureMax",
+        "devices[].temperatureStep"
       ]
     }
   ]
