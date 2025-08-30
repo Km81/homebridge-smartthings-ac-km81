@@ -34,6 +34,12 @@
 4. **별도 스위치 노출(선택)**  
    - `무풍 별도 스위치 노출`, `자동건조 별도 스위치 노출` 체크 시 **개별 Switch 액세서리**가 생성됩니다.
 
+5. ### 플랫폼 기본값(모든 장치 공통 기본)
+
+  - `기본 목표온도 최소값(℃)` (`temperatureMin`) — 기본 `18`  
+  - `기본 목표온도 최대값(℃)` (`temperatureMax`) — 기본 `30`  
+  - `기본 목표온도 스텝(℃)` (`temperatureStep`) — 기본 `1`
+
 > 매칭 기준: SmartThings의 **장치 레이블(deviceLabel)**. 한국어 정규화(NFC) 처리는 해주지만, **띄어쓰기/철자**는 정확히 일치해야 합니다.
 
 ---
@@ -233,6 +239,7 @@ Homebridge UI로 입력하거나 `config.json`에 직접 추가:
 | `lockBinding` | `autoClean` / `none` | `autoClean` | 잠금 ↔ 자동건조 매핑 또는 숨김 |
 | `exposeWindFreeSwitch` | `true/false` | `false` | 무풍 별도 스위치 생성 |
 | `exposeAutoCleanSwitch` | `true/false` | `false` | 자동건조 별도 스위치 생성 |
+
 
 
 
